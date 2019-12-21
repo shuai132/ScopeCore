@@ -1,8 +1,8 @@
-#include "Scope.h"
+#include "ScopeMCU.h"
 
 namespace scope {
 
-Scope::Scope()
+ScopeMCU::ScopeMCU() noexcept
     : processor_(false) {
     processor_.setMaxBufferSize(sizeof(Cmd));
     processor_.setOnPacketHandle([this](uint8_t* payload, size_t size) {
@@ -34,12 +34,7 @@ Scope::Scope()
     });
 }
 
-Scope& Scope::getInstance() {
-    static Scope instance;
-    return instance;
-}
-
-void Scope::setMcuImpl(MCU mcu) {
+void ScopeMCU::setMcuImpl(MCU mcu) {
     mcu_ = std::move(mcu);
     updateFs(50000);
     updateSampleNum(512);
@@ -49,7 +44,7 @@ void Scope::setMcuImpl(MCU mcu) {
     mcu_.startADC();
 }
 
-void Scope::onADC(SampleVo_t vol) {
+void ScopeMCU::onADC(SampleVo_t vol) {
     static auto lastVol = vol;
 
     if (sampling_) {
@@ -82,49 +77,49 @@ void Scope::onADC(SampleVo_t vol) {
     lastVol = vol;
 }
 
-void Scope::setVolLimits(SampleVo_t volMin, SampleVo_t volMax) {
+void ScopeMCU::setVolLimits(SampleVo_t volMin, SampleVo_t volMax) {
     sampleInfo_.volMinmV = volMin;
     sampleInfo_.volMaxmV = volMax;
 }
 
-void Scope::setFsLimits(SampleFs_t fsMinSps, SampleFs_t fsMaxSps) {
+void ScopeMCU::setFsLimits(SampleFs_t fsMinSps, SampleFs_t fsMaxSps) {
     sampleInfo_.fsMinSps = fsMinSps;
     sampleInfo_.fsMaxSps = fsMaxSps;
 }
 
-void Scope::setMaxSn(SampleSn_t sn) {
+void ScopeMCU::setMaxSn(SampleSn_t sn) {
     maxSampleNum_ = sn;
     message_.reset((Message*)new char[Message::CalcBytes(maxSampleNum_)]);
 }
 
-void Scope::onRead(uint8_t* data, size_t size) {
+void ScopeMCU::onRead(uint8_t* data, size_t size) {
     processor_.feed(data, size);
 }
 
-bool Scope::isSampling() {
+bool ScopeMCU::isSampling() {
     return sampling_;
 }
 
-void Scope::addADC(SampleVo_t vol) {
+void ScopeMCU::addADC(SampleVo_t vol) {
     message_->sampleCh1[samplePos_] = vol;
     if (++samplePos_ >= sampleInfo_.sampleSn) {
         onSampleFinish();
     }
 };
 
-void Scope::startSample() {
+void ScopeMCU::startSample() {
     sampling_ = true;
     samplePos_ = 0;
     mcu_.onSampling(true);
 }
 
-void Scope::stopSample() {
+void ScopeMCU::stopSample() {
     sampling_ = false;
     samplePos_ = 0;
     mcu_.onSampling(false);
 }
 
-void Scope::onSampleFinish() {
+void ScopeMCU::onSampleFinish() {
     stopSample();
     message_->sampleInfo = sampleInfo_;
     processor_.packForeach(message_.get(), Message::CalcBytes(sampleInfo_.sampleSn), [this](uint8_t* data, size_t size) {
@@ -136,7 +131,7 @@ void Scope::onSampleFinish() {
     }
 }
 
-void Scope::updateFs(SampleFs_t fs) {
+void ScopeMCU::updateFs(SampleFs_t fs) {
     if (fs > sampleInfo_.fsMaxSps) {
         fs = sampleInfo_.fsMaxSps;
     }
@@ -144,7 +139,7 @@ void Scope::updateFs(SampleFs_t fs) {
     sampleInfo_.sampleFs = realFs;
 }
 
-void Scope::updateSampleNum(SampleSn_t sn) {
+void ScopeMCU::updateSampleNum(SampleSn_t sn) {
     if (sn > maxSampleNum_) {
         sn = maxSampleNum_;
     } else if (sn < 2) {
@@ -153,18 +148,18 @@ void Scope::updateSampleNum(SampleSn_t sn) {
     sampleInfo_.sampleSn = sn;
 }
 
-void Scope::updateTriggerMode(TriggerMode mode) {
+void ScopeMCU::updateTriggerMode(TriggerMode mode) {
     sampleInfo_.triggerMode = mode;
     if (mode == TriggerMode::SOFTWARE) {
         startSample();
     }
 }
 
-void Scope::updateTriggerSlope(TriggerSlope slope) {
+void ScopeMCU::updateTriggerSlope(TriggerSlope slope) {
     sampleInfo_.triggerSlope = slope;
 }
 
-void Scope::updateTriggerLevel(TriggerLevel vol) {
+void ScopeMCU::updateTriggerLevel(TriggerLevel vol) {
     sampleInfo_.triggerLevel = vol;
 }
 

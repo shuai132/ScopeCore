@@ -4,12 +4,14 @@
 #include <cstdint>
 #include <memory>
 
+#include "noncopyable.h"
 #include "Portable.h"
 #include "PacketProcessor.h"
 
 namespace scope {
 
-class Scope {
+class ScopeMCU : noncopyable {
+    /// 单片机接口
     struct MCU {
         // 发送数据到上位机
         std::function<void(uint8_t* data, size_t size)> sendData;
@@ -24,11 +26,8 @@ class Scope {
         std::function<void(bool sampling)> onSampling;
     };
 
-private:
-    Scope();
-
 public:
-    static Scope& getInstance();
+    ScopeMCU() noexcept;
 
 public:
     /**
@@ -71,7 +70,6 @@ public:
     void onRead(uint8_t* data, size_t size);
 
     bool isSampling();
-
 
 private:
     void addADC(SampleVo_t vol);
