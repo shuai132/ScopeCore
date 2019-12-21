@@ -1,5 +1,7 @@
 # ScopeCore
 
+[![Build Status](https://github.com/shuai132/ScopeCore/workflows/build/badge.svg)](https://github.com/shuai132/ScopeCore/actions?workflow=build)
+
 Portable oscilloscope core
 
 ## Usage
