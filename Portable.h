@@ -31,7 +31,7 @@ struct SampleInfo {
     SampleVo_t volMaxmV;
     SampleFs_t fsMinSps;
     SampleFs_t fsMaxSps;
-    SampleSn_t sampleNumMax;
+    SampleSn_t sampleSnMax;
 
     // sample info
     SampleSn_t sampleSn;
@@ -57,7 +57,7 @@ struct Cmd  {
     enum class Type : uint8_t {
         NONE = 0,
         SET_SAMPLE_FS,      // data: fs(Hz)
-        SET_SAMPLE_NUM,     // data: num(point)
+        SET_SAMPLE_SN,      // data: sn(point)
         SET_TRIGGER_MODE,   // data: mode(TriggerMode)
         SET_TRIGGER_SLOPE,  // data: slope(TriggerSlope)
         SET_TRIGGER_LEVEL,  // data: level(TriggerLevel)
@@ -66,7 +66,7 @@ struct Cmd  {
 
     union Data {
         SampleFs_t sampleFs;
-        SampleSn_t sampleNum;
+        SampleSn_t sampleSn;
         TriggerMode triggerMode;
         TriggerSlope triggerSlope;
         TriggerLevel triggerLevel;

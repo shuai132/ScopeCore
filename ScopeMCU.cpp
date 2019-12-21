@@ -15,8 +15,8 @@ ScopeMCU::ScopeMCU() noexcept
             case Cmd::Type::SET_SAMPLE_FS:
                 updateFs(data.sampleFs);
                 break;
-            case Cmd::Type::SET_SAMPLE_NUM:
-                updateSampleNum(data.sampleNum > maxSampleNum_ ? maxSampleNum_ : data.sampleNum);
+            case Cmd::Type::SET_SAMPLE_SN:
+                updateSampleNum(data.sampleSn > maxSampleNum_ ? maxSampleNum_ : data.sampleSn);
                 break;
             case Cmd::Type::SET_TRIGGER_MODE:
                 updateTriggerMode(data.triggerMode);

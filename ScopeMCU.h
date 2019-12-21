@@ -94,7 +94,7 @@ private:
     PacketProcessor processor_;
 
     SampleInfo sampleInfo_{};
-    SampleSn_t& maxSampleNum_ = sampleInfo_.sampleNumMax;
+    SampleSn_t& maxSampleNum_ = sampleInfo_.sampleSnMax;
     std::unique_ptr<Message> message_;
 
     bool sampling_ = false;
