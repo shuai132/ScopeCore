@@ -12,3 +12,6 @@ add_compile_options(-Wall)
 
 add_library(ScopeCoreMCU STATIC ScopeMCU.cpp)
 target_include_directories(ScopeCoreMCU PUBLIC .)
+
+add_library(ScopeCoreGUI STATIC ScopeGUI.cpp)
+target_include_directories(ScopeCoreGUI PUBLIC .)
