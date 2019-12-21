@@ -19,7 +19,7 @@ public:
     };
 
 public:
-    explicit ScopeGUI(Comm* comm) noexcept;
+    explicit ScopeGUI(Comm* comm, uint16_t cmdIntervalMs = 0) noexcept;
 
 public:
     /**
