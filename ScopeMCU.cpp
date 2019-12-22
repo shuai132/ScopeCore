@@ -10,24 +10,24 @@ ScopeMCU::ScopeMCU() noexcept
         Cmd* cmd = (Cmd*)payload;
         Cmd::Data data = cmd->data;
         switch (cmd->type) {
-            case Cmd::Type::NONE:
+            case Cmd::NONE:
                 break;
-            case Cmd::Type::SET_SAMPLE_FS:
+            case Cmd::SET_SAMPLE_FS:
                 updateFs(data.sampleFs);
                 break;
-            case Cmd::Type::SET_SAMPLE_SN:
+            case Cmd::SET_SAMPLE_SN:
                 updateSampleNum(data.sampleSn > maxSampleNum_ ? maxSampleNum_ : data.sampleSn);
                 break;
-            case Cmd::Type::SET_TRIGGER_MODE:
+            case Cmd::SET_TRIGGER_MODE:
                 updateTriggerMode(data.triggerMode);
                 break;
-            case Cmd::Type::SET_TRIGGER_SLOPE:
+            case Cmd::SET_TRIGGER_SLOPE:
                 updateTriggerSlope(data.triggerSlope);
                 break;
-            case Cmd::Type::SET_TRIGGER_LEVEL:
+            case Cmd::SET_TRIGGER_LEVEL:
                 updateTriggerLevel(data.triggerLevel);
                 break;
-            case Cmd::Type::SOFTWARE_TRIGGER:
+            case Cmd::SOFTWARE_TRIGGER:
                 startSample();
                 break;
         }

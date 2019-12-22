@@ -54,7 +54,7 @@ struct Message  {
 };
 
 struct Cmd  {
-    enum class Type : uint8_t {
+    enum Type : uint8_t {
         NONE = 0,
         SET_SAMPLE_FS,      // data: fs(Hz)
         SET_SAMPLE_SN,      // data: sn(point)
@@ -72,7 +72,7 @@ struct Cmd  {
         TriggerLevel triggerLevel;
     };
 
-    Type type = Type::NONE;
+    Type type = NONE;
     Data data{};
 };
 
