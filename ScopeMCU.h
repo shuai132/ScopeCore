@@ -97,6 +97,7 @@ private:
     SampleSn_t& maxSampleNum_ = sampleInfo_.sampleSnMax;
     std::unique_ptr<Message> message_;
 
+    SampleVo_t lastVol_{};
     bool sampling_ = false;
 
     uint16_t samplePos_ = 0;

@@ -45,8 +45,6 @@ void ScopeMCU::setMcuImpl(MCU mcu) {
 }
 
 void ScopeMCU::onADC(SampleVo_t vol) {
-    static auto lastVol = vol;
-
     if (sampling_) {
         addADC(vol);
         return;
@@ -56,16 +54,16 @@ void ScopeMCU::onADC(SampleVo_t vol) {
     if (sampleInfo_.triggerMode == TriggerMode::NORMAL) {
         switch (sampleInfo_.triggerSlope) {
             case TriggerSlope::UP:
-                if (lastVol < sampleInfo_.triggerLevel && sampleInfo_.triggerLevel < vol) {
+                if (lastVol_ < sampleInfo_.triggerLevel && sampleInfo_.triggerLevel < vol) {
                     startSample();
-                    addADC(lastVol);
+                    addADC(lastVol_);
                     addADC(vol);
                 }
                 break;
             case TriggerSlope::DOWN:
-                if (lastVol > sampleInfo_.triggerLevel && sampleInfo_.triggerLevel > vol) {
+                if (lastVol_ > sampleInfo_.triggerLevel && sampleInfo_.triggerLevel > vol) {
                     startSample();
-                    addADC(lastVol);
+                    addADC(lastVol_);
                     addADC(vol);
                 }
                 break;
@@ -74,7 +72,7 @@ void ScopeMCU::onADC(SampleVo_t vol) {
     else if (sampleInfo_.triggerMode == TriggerMode::ALWAYS) {
         startSample();
     }
-    lastVol = vol;
+    lastVol_ = vol;
 }
 
 void ScopeMCU::setVolLimits(SampleVo_t volMin, SampleVo_t volMax) {
