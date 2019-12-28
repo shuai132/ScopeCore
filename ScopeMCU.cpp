@@ -99,7 +99,7 @@ bool ScopeMCU::isSampling() {
 }
 
 void ScopeMCU::addADC(SampleVo_t vol) {
-    message_->sampleCh1[samplePos_] = vol;
+    message_->sampleData[samplePos_] = vol;
     if (++samplePos_ >= sampleInfo_.sampleSn) {
         onSampleFinish();
     }

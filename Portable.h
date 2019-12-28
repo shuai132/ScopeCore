@@ -4,8 +4,6 @@
 
 namespace scope {
 
-const auto ChannelNum = 1;
-
 using SampleFs_t = uint32_t;
 using SampleSn_t = uint16_t;
 using SampleVo_t = uint16_t;
@@ -44,10 +42,10 @@ struct SampleInfo {
 /// Only used for transmission!
 struct Message  {
     SampleInfo sampleInfo;
-    SampleVo_t sampleCh1[0];
+    SampleVo_t sampleData[0];
 
-    static SampleSn_t CalcBytes(SampleSn_t sn) {
-        return sizeof(SampleInfo) + sizeof(SampleSn_t) * ChannelNum * sn;
+    static size_t CalcBytes(SampleSn_t sn) {
+        return sizeof(SampleInfo) + sizeof(SampleVo_t) * sn;
     }
 
     Message() = delete;
