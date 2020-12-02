@@ -27,7 +27,12 @@ class ScopeMCU : noncopyable {
     };
 
 public:
-    ScopeMCU() noexcept;
+    /**
+     * 构造函数
+     * @param maxSn  最大采样数
+     * @param buffer 采样缓冲区 Message::CalcBytes(maxSn)
+     */
+    explicit ScopeMCU(size_t maxSn, uint8_t* buffer = nullptr) noexcept;
 
 public:
     /**
@@ -55,12 +60,6 @@ public:
      * @param fsMaxSps
      */
     void setFsLimits(SampleFs_t fsMinSps, SampleFs_t fsMaxSps);
-
-    /**
-     * 设置最大采样点 取决于RAM大小
-     * @param sn
-     */
-    void setMaxSn(SampleSn_t sn);
 
     /**
      * 接收到上位机数据时调用

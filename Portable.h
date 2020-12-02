@@ -44,7 +44,7 @@ struct Message  {
     SampleInfo sampleInfo;
     SampleVo_t sampleData[0];
 
-    static size_t CalcBytes(SampleSn_t sn) {
+    constexpr static size_t CalcBytes(SampleSn_t sn) noexcept {
         return sizeof(SampleInfo) + sizeof(SampleVo_t) * sn;
     }
 

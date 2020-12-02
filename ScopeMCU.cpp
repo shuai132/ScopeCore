@@ -2,8 +2,15 @@
 
 namespace scope {
 
-ScopeMCU::ScopeMCU() noexcept
-    : processor_(false) {
+ScopeMCU::ScopeMCU(size_t maxSn, uint8_t* buffer) noexcept
+    : processor_(false)
+    {
+    maxSampleNum_ = maxSn;
+    if (buffer != nullptr) {
+        message_.reset(reinterpret_cast<Message*>(buffer));
+    } else {
+        message_.reset(reinterpret_cast<Message*>(new uint8_t[Message::CalcBytes(maxSn)]));
+    }
     processor_.setMaxBufferSize(sizeof(Cmd));
     processor_.setOnPacketHandle([this](uint8_t* payload, size_t size) {
         stopSample();
@@ -83,11 +90,6 @@ void ScopeMCU::setVolLimits(SampleVo_t volMin, SampleVo_t volMax) {
 void ScopeMCU::setFsLimits(SampleFs_t fsMinSps, SampleFs_t fsMaxSps) {
     sampleInfo_.fsMinSps = fsMinSps;
     sampleInfo_.fsMaxSps = fsMaxSps;
-}
-
-void ScopeMCU::setMaxSn(SampleSn_t sn) {
-    maxSampleNum_ = sn;
-    message_.reset((Message*)new char[Message::CalcBytes(maxSampleNum_)]);
 }
 
 void ScopeMCU::onRead(uint8_t* data, size_t size) {
