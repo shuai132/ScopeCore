@@ -3,7 +3,7 @@
 namespace scope {
 
 ScopeMCU::ScopeMCU(size_t maxSn, uint8_t* buffer) noexcept
-    : processor_(false)
+    : processor_(nullptr, false)
     {
     maxSampleNum_ = maxSn;
     if (buffer != nullptr) {

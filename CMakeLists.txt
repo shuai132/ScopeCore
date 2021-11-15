@@ -4,8 +4,8 @@ project(ScopeCore)
 
 # PacketProcessor
 add_subdirectory(modules/PacketProcessor)
-link_libraries(packetprocessor)
-target_compile_definitions(packetprocessor PRIVATE NDEBUG)
+link_libraries(PacketProcessor)
+target_compile_definitions(PacketProcessor PRIVATE NDEBUG)
 
 set(CMAKE_CXX_STANDARD 11)
 add_compile_options(-Wall)

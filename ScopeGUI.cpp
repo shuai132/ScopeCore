@@ -3,7 +3,7 @@
 namespace scope {
 
 ScopeGUI::ScopeGUI(Comm* comm_, uint16_t cmdIntervalMs) noexcept
-    : comm_(comm_), packetProcessor_(false), cmdInterval_(cmdIntervalMs) {
+    : comm_(comm_), packetProcessor_(nullptr, false), cmdInterval_(cmdIntervalMs) {
     packetProcessor_.setOnPacketHandle([this](uint8_t* data, size_t size) {
         onMessage((Message*)data, size);
     });
